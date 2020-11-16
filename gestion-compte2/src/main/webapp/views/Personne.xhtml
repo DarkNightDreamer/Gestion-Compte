@@ -1,0 +1,77 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html">
+
+<h:head></h:head>
+<body>
+
+	<h:form>
+
+
+		<h:panelGrid columns="2">
+
+
+
+			<h:outputLabel value="CIN" />
+			<h:inputText value="#{personneBean.personne.cin}"
+				readonly="#{personneBean.btnEdit}" />
+			<h:outputLabel value="Nom" />
+			<h:inputText value="#{personneBean.personne.nom}" />
+			<h:outputLabel value="Prenom" />
+			<h:inputText value="#{personneBean.personne.prenom}" />
+			<h:outputLabel value="adresse" />
+			<h:inputText value="#{personneBean.personne.adresse}" />
+			<h:outputLabel value="email" />
+			<h:inputText value="#{personneBean.personne.email}" />
+
+			<!-- // appel methode mawjouda fel bean 
+			rendred show w hidden   -->
+			<h:commandButton action="#{personneBean.ajouter()}" value="Ajouter"
+				rendered="#{personneBean.btnAdd}" />
+			<h:commandButton action="#{personneBean.modifier()}" value="Editer"
+				rendered="#{personneBean.btnEdit}" />
+			<h:commandButton action="#{personneBean.annuler()}" value="annuler" />
+
+		</h:panelGrid>
+		<h:dataTable value="#{personneBean.list}" var="pers">
+			<h:column>
+				<f:facet name="header">CIN</f:facet>
+				<h:outputText value="#{pers.cin}" />
+			</h:column>
+			<h:column>
+				<f:facet name="header">Nom</f:facet>
+				<h:outputText value="#{pers.nom}" />
+			</h:column>
+			<h:column>
+				<f:facet name="header">Prenom</f:facet>
+				<h:outputText value="#{pers.prenom}" />
+			</h:column>
+			<h:column>
+				<f:facet name="header">Adresse</f:facet>
+				<h:outputText value="#{pers.adresse}" />
+			</h:column>
+			<h:column>
+				<f:facet name="header">email</f:facet>
+				<h:outputText value="#{pers.email}" />
+			</h:column>
+			<h:column>
+				<f:facet name="header">Opération</f:facet>
+				<h:commandButton action="#{personneBean.supprimer()}"
+					value="supprimer"
+					onclick="return confirm('vous ete sur de supprimer?')">
+					<f:setPropertyActionListener value="#{pers}"
+						target="#{personneBean.personne}" />
+				</h:commandButton>
+
+				<h:commandButton action="#{personneBean.clickEdit()}" value="Editer">
+					<f:setPropertyActionListener value="#{pers}"
+						target="#{personneBean.personne}" />
+				</h:commandButton>
+
+			</h:column>
+		</h:dataTable>
+	</h:form>
+</body>
+</html>

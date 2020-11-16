@@ -1,0 +1,116 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head></h:head>
+<body>
+	<h:form id="f1" >
+		<p:commandButton value="Créer compte" style="float:right"
+			action="#{compteBean.clickAdd()}" onclick="PF('dlg').show();" update="f1:panel"></p:commandButton>
+		<br />
+		<br />
+		<br />
+
+		<p:dataTable value="#{compteBean.list}" var="cpt" id="tab">
+			<p:column headerText="Date Création">
+				<h:outputText value="#{cpt.date}">
+					<f:convertDateTime pattern="dd/MM/yyyy" timeZone="CET" />
+				</h:outputText>
+			</p:column>
+
+			<p:column headerText="Type compte">
+				<h:outputText value="#{cpt.type}" />
+			</p:column>
+			<p:column headerText="Solde">
+				<h:outputText value="#{cpt.solde}">
+				</h:outputText>
+			</p:column>
+			<p:column headerText="Client">
+				<h:outputText value="#{cpt.personne.nom} #{cpt.personne.prenom}">
+				</h:outputText>
+			</p:column>
+
+			<p:column headerText="operation">
+				<p:commandButton update="tab" value="Supprimer"
+					action="#{compteBean.supprimer()}">
+					<f:setPropertyActionListener value="#{cpt}"
+						target="#{compteBean.compte}"></f:setPropertyActionListener>
+
+					<p:confirm header="Confirmation" message="Are you sure?"
+						icon="pi pi-exclamation-triangle" />
+				</p:commandButton>
+
+
+				<p:commandButton update="f1:panel" value="Editer"
+					action="#{compteBean.clickEdit()}" onclick="PF('dlg').show();">
+					<f:setPropertyActionListener value="#{cpt}"
+						target="#{compteBean.compte}"></f:setPropertyActionListener>
+
+
+				</p:commandButton>
+			</p:column>
+
+		</p:dataTable>
+
+		<p:dialog header="Compte" widgetVar="dlg" modal="true"
+			resizable="false" showEffect="explode" hideEffect="bounce">
+			<h:panelGrid columns="2" id="panel">
+				<h:outputText value="Date" />
+				<p:calendar value="#{compteBean.compte.date}" pattern="dd/MM/yyy"></p:calendar>
+
+				<h:outputText value="Client" />
+				<p:selectOneMenu value="#{compteBean.compte.personne.cin}"
+					filter="true" filterMatchMode="contains">
+
+
+					<f:selectItems value="#{personneBean.list}" var="pers"
+						itemLabel="#{pers.nom} #{pers.prenom}" itemValue="#{pers.cin}" />
+				</p:selectOneMenu>
+
+				<h:outputText value="Type" />
+				<p:selectOneMenu value="#{compteBean.compte.type}">
+					<f:selectItem itemLabel=" Compte Courant "
+						itemValue="Compte Courant" />
+					<f:selectItem itemLabel=" Compte Epargne "
+						itemValue="Compte Epargne" />
+					<f:selectItem itemLabel=" Compte Devise " itemValue="Compte Devise" />
+
+
+				</p:selectOneMenu>
+
+				<h:outputText value="solde" />
+				<p:inputText value="#{compteBean.compte.solde}">
+					<p:keyFilter regEx="	/[\d\.]/"></p:keyFilter>
+				</p:inputText>
+				<!-- update ajoue ma8ir actualisation -->
+				<!-- pncomplite ki nkamel tetna7a el diag -->
+				<p:commandButton value="Ajouter" action="#{compteBean.ajouter()}"
+					rendered="#{compteBean.btnAdd}" update="tab"
+					oncomplete="PF('dlg').hide();"></p:commandButton>
+
+				<p:commandButton value="Modifier" action="#{compteBean.modifier()}"
+					rendered="#{compteBean.btnEdit}" update="tab"
+					oncomplete="PF('dlg').hide();"></p:commandButton>
+
+
+
+
+			</h:panelGrid>
+		</p:dialog>
+		<p:growl showDetail="true">
+			<p:autoUpdate></p:autoUpdate>
+		</p:growl>
+
+		<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+			<p:commandButton value="Yes" type="button"
+				styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
+			<p:commandButton value="No" type="button"
+				styleClass="ui-confirmdialog-no" icon="pi pi-times" />
+		</p:confirmDialog>
+
+	</h:form>
+</body>
+</html>
