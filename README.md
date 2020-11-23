@@ -1,4 +1,5 @@
-# Gestion-Compte
+# Gestion-Compte (Web application Fullstack)
+
 Jee website 
 JDBC : pour l’accès aux données
  JSP Servlet :
